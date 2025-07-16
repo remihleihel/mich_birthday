@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Rfi2te!</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 4em;
+      color: #fff;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    p {
+      font-size: 1.5em;
+      color: #fff;
+      max-width: 500px;
+      margin: 20px auto 0;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #ff9a9e, 0 0 20px #fbc2eb;
+      }
+      to {
+        text-shadow: 0 0 20px #ffdde1, 0 0 30px #ff6a88;
+      }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    #playButton {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #playButton:hover {
+      background-color: #fbd3e9;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>🎂 Happy Birthday 7amete! 🎉</h1>
+    <p>Mabrouk level 30!</p>
+    <button id="playButton">Play Music</button>
+  </div>
+
+  <canvas id="confetti"></canvas>
+
+  <audio id="birthdayMusic" src="HappyBirthday.mp3"></audio>
+
+  <script>
+    const button = document.getElementById('playButton');
+    const audio = document.getElementById('birthdayMusic');
+
+    button.addEventListener('click', () => {
+      audio.play();
+      button.style.display = 'none';
+    });
+
+    // Simple Confetti Animation
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    for (let i = 0; i < 150; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 4 + 1,
+        d: Math.random() * 50,
+        color: hsl(${Math.random() * 360}, 100%, 50%),
+        tilt: Math.random() * 10 - 10
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.moveTo(p.x, p.y);
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+        ctx.fill();
+      });
+      update();
+    }
+
+    function update() {
+      particles.forEach(p => {
+        p.y += Math.cos(p.d) + 1 + p.r / 2;
+        p.x += Math.sin(p.d);
+
+        if (p.y > canvas.height) {
+          p.x = Math.random() * canvas.width;
+          p.y = -10;
+        }
+      });
+    }
+
+    function loop() {
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>
